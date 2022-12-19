@@ -4,7 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const controller_1 = __importDefault(require("./lower-case/controller"));
+const controller_2 = __importDefault(require("./cluster-config/controller"));
 function default_1(RED) {
     (0, controller_1.default)(RED);
+    (0, controller_2.default)(RED);
 }
 exports.default = default_1;
+
+//# sourceMappingURL=kube-red.js.map

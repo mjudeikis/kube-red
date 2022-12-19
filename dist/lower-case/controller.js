@@ -5,8 +5,12 @@ class LowerCaseController {
         node.on('input', this.onInput.bind(this));
         this.node = node;
         this.prefix = config.prefix;
+        this.cluster = config.cluster;
+        this.configNode = RED.nodes.getNode(this.cluster);
     }
     onInput(msg) {
+        let nn = this.configNode;
+        console.log(nn.clusterName);
         if (typeof msg.payload === 'string') {
             msg.payload = this.prefix + msg.payload.toLowerCase();
             this.node.send(msg);
@@ -22,3 +26,5 @@ function default_1(RED) {
     });
 }
 exports.default = default_1;
+
+//# sourceMappingURL=controller.js.map
