@@ -1,5 +1,6 @@
 import { NodeAPI } from "node-red";
 import { afterEach, beforeEach, describe, it } from "node:test";
+import { assert } from 'tsafe/assert';
 import register from "./node";
 import registerClusterConfig from "../../cluster-config/node";
 import * as k8s from '@kubernetes/client-node';
@@ -20,7 +21,7 @@ describe('create Node', function () {
 
   beforeEach(function (done) {
     if (!fs.existsSync("./kubeconfig")) {
-      done("kubeconfig file not found")
+      done(new Error("kubeconfig file not found"))
     }
 
     helper.startServer(done);
@@ -44,17 +45,11 @@ describe('create Node', function () {
 
     existingObject = JSON.parse(JSON.stringify(object)); // deep copy
     existingObject.metadata.name = name + "-existing";
-
-    // create object
-    client.create(existingObject);
-    sleep(1000);
   });
 
   afterEach(function (done) {
     helper.unload();
     helper.stopServer(done);
-
-    client.delete(existingObject);
   });
 
   it("should be loaded", (done) => {
@@ -125,7 +120,7 @@ describe('create Node', function () {
   });
 
   it('should do nothing', function (done) {
-    const flow = [
+   const flow = [
       { id: "n1", type: "create", name: "test", cluster: "cfg", wires:[["n2"]] },
       { id: "cfg", type: "cluster-config", name: "cluster", "config": {"incluster": true,}},
       { id: "n2", type: "helper" },

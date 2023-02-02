@@ -44,18 +44,11 @@ describe('upsert Node', function () {
 
     existingObject = JSON.parse(JSON.stringify(object)); // deep copy
     existingObject.metadata.name = name + "-existing";
-
-    // create object
-    client.create(existingObject)
-    sleep(1000);
   });
 
   afterEach(function (done) {
-    client.delete(existingObject);
     helper.unload();
     helper.stopServer(done);
-
-
   });
 
   it("should be loaded", (done) => {
@@ -97,6 +90,10 @@ describe('upsert Node', function () {
   });
 
   it('should upsert object', function (done) {
+     // create object
+     client.create(existingObject);
+     sleep(1000);
+
     const flow = [
       { id: "n1", type: "upsert", name: "test", cluster: "cfg", wires:[["n2"]] },
       { id: "cfg", type: "cluster-config", name: "cluster", "config": {"incluster": true,}},

@@ -41,9 +41,6 @@ describe('delete Node', function () {
         name: name,
       },
     }
-
-    client.create(object)
-    sleep(1000);
   });
 
   afterEach(function (done) {
@@ -89,11 +86,10 @@ describe('delete Node', function () {
     });
   });
 
-  it('noop', function (done) {
-    done();
-  });
-
   it('should delete object', function (done) {
+    client.create(object);
+    sleep(1000);
+
     const flow = [
       { id: "n1", type: "delete", name: "test", cluster: "cfg", wires:[["n2"]] },
       { id: "cfg", type: "cluster-config", name: "cluster", "config": {"incluster": true,}},
@@ -109,6 +105,7 @@ describe('delete Node', function () {
       n2.on("input", function (msg: PayloadType) {
         try {
          const data =  msg.object as k8s.V1Status;
+         console.log(data)
          if (data.status["phase"] == 'Terminating') {
             done();
          } else{
@@ -118,7 +115,7 @@ describe('delete Node', function () {
           done(err);
         }
       });
-      const msg: PayloadType = {object: object, _msgid: "test3"};
+      const msg: PayloadType = {object: object, _msgid: name};
       n1.receive(msg);
     });
   });

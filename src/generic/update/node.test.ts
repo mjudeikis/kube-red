@@ -44,17 +44,11 @@ describe('update Node', function () {
 
     existingObject = JSON.parse(JSON.stringify(object)); // deep copy
     existingObject.metadata.name = name + "-existing";
-
-    // create object
-    client.create(existingObject);
-    sleep(1000);
   });
 
   afterEach(function (done) {
     helper.unload();
     helper.stopServer(done);
-
-    client.delete(existingObject)
   });
 
   it("should be loaded", (done) => {
@@ -96,6 +90,10 @@ describe('update Node', function () {
   });
 
   it('should do nothing object', function (done) {
+     // create object
+     client.create(existingObject);
+     sleep(1000);
+
     const flow = [
       { id: "n1", type: "update", name: "test", cluster: "cfg", wires:[["n2"]] },
       { id: "cfg", type: "cluster-config", name: "cluster", "config": {"incluster": true,}},
