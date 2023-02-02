@@ -10,6 +10,7 @@ import crypto = require("crypto");
 import helper = require("node-red-node-test-helper")
 
 helper.init(require.resolve('node-red'));
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 describe('delete Node', function () {
   let name: string
@@ -42,14 +43,12 @@ describe('delete Node', function () {
     }
 
     client.create(object)
-
+    sleep(1000);
   });
 
   afterEach(function (done) {
     helper.unload();
     helper.stopServer(done);
-
-    client.delete(object)
   });
 
   it("should be loaded", (done) => {
@@ -90,6 +89,9 @@ describe('delete Node', function () {
     });
   });
 
+  it('noop', function (done) {
+    done();
+  });
 
   it('should delete object', function (done) {
     const flow = [
@@ -116,7 +118,7 @@ describe('delete Node', function () {
           done(err);
         }
       });
-      const msg: PayloadType = {object: object, _msgid: "test"};
+      const msg: PayloadType = {object: object, _msgid: "test3"};
       n1.receive(msg);
     });
   });
