@@ -4,6 +4,7 @@ on:
     types: [created]
 jobs:
   npmjs:
+    environment: NPM
     runs-on: ubuntu-latest
     steps:
       - name: checkout
