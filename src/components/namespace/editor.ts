@@ -1,9 +1,10 @@
 import { EditorNodeDef, EditorNodeProperties } from 'node-red';
 import { Controller } from './types';
-import { Controller as ClusterConfigController} from '../cluster-config/types';
+import { Controller as ClusterConfigController} from '../../cluster-config/types';
 
 export interface NamespaceEditorProperties extends EditorNodeProperties {
     cluster: string;
+    nodename: string;
 
     action: string;
 }
@@ -15,14 +16,14 @@ const NamespaceEditor: EditorNodeDef<NamespaceEditorProperties> = {
     icon: "kubernetes_logo_40x60_white.png",
     align: "left",
     defaults: {
-        name: {value:""},
+        nodename: {value:""},
         cluster: {value: "", type: ClusterConfigController.name, required: true},
         action: {value: "-"},
     },
     inputs:1,
     outputs:1,
     label: function() {
-        return this.name||Controller.name;
+        return this.nodename||Controller.name;
     },
     oneditprepare: function() {
         // Example how to add a new row on action selection using switch
@@ -40,13 +41,13 @@ const NamespaceEditor: EditorNodeDef<NamespaceEditorProperties> = {
         // }
 
         // Action config container
-        var container = $('#node-input-config-container')
+        const container = $('#node-input-config-container')
 
-        var row1 = $('<div/>').appendTo(container);
+        const row1 = $('<div/>').appendTo(container);
         $('<label/>',{for:"node-input-action",style:"width:110px; margin-right:10px;"}).text("Action").appendTo(row1);
-        var propertyAction = $('<select/>',{style:"width:250px",class:"node-input-action",
+        const propertyAction = $('<select/>',{style:"width:250px",class:"node-input-action",
         // Add event listener to render the correct fields
-            onchange: function(ev: Event) {
+            onchange: function() {
                 // event listener for example above
                 // addEventListener('change', selectAction);
             }})
@@ -63,8 +64,8 @@ const NamespaceEditor: EditorNodeDef<NamespaceEditorProperties> = {
     },
     oneditsave: function() {
         // Find client source details
-        var property = $("#node-input-config-container");
-        var node = this;
+        const property = $("#node-input-config-container");
+        const node = this; // eslint-disable-line
         node.action = property.find(".node-input-action :selected").text();
 
     },

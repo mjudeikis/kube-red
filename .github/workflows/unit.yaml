@@ -16,15 +16,13 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: setup kind
-        uses: engineerd/setup-kind@v0.5.0
+        uses: helm/kind-action@v1.4.0
       - name: setup node
         uses: actions/setup-node@v3
         with:
           node-version: 19
       - name: install dependencies
         run: npm install
-      - name: build
-        run: npm run build
       - name: run tests
         run: |
           echo ${KUBECONFIG} > kubeconfig

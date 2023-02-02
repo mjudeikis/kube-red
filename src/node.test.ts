@@ -1,9 +1,10 @@
-import { Node, RED } from "./node";
+import { Node } from "./node";
 import { NodeDef, NodeAPI } from "node-red";
 import nodeRedNodeTestHelper from "node-red-node-test-helper";
-import { afterEach, beforeEach, describe, it } from "node:test";
-import registerNamespace from "./namespace/node";
-import registerConfigMap from "./configmap/node";
+import { describe, it } from "node:test";
+import registerNamespace from "./components/namespace/node";
+import registerConfigMap from "./components/configmap/node";
+import registerUpsert from "./generic/upsert/node";
 
 describe("Node", () => {
     class Foo extends Node {
@@ -13,7 +14,7 @@ describe("Node", () => {
     }
 
     it("should register", () => {
-        var flow = [
+        const flow = [
             { id: "n1", type: "lower-case", name: "lc" },
             { id: "n2", type: "foo", name: "foo" },
         ];
@@ -21,9 +22,10 @@ describe("Node", () => {
             Foo.registerType(RED, "foo");
             registerNamespace(RED);
             registerConfigMap(RED);
+            registerUpsert(RED);
         }, flow, () => {
             console.log(nodeRedNodeTestHelper.getNode("n1"));
             console.log(nodeRedNodeTestHelper.getNode("n2"));
         });
-    })
+    });
 });
