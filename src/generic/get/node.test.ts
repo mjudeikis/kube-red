@@ -10,6 +10,7 @@ import crypto = require("crypto");
 import helper = require("node-red-node-test-helper")
 
 helper.init(require.resolve('node-red'));
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 describe('get Node', function () {
   let name: string
@@ -42,7 +43,7 @@ describe('get Node', function () {
     }
 
     client.create(object)
-
+    sleep(1000);
   });
 
   afterEach(function (done) {
@@ -116,7 +117,7 @@ describe('get Node', function () {
           done(err);
         }
       });
-      const msg: PayloadType = {object: object, _msgid: "test"};
+      const msg: PayloadType = {object: object, _msgid: "test4"};
       n1.receive(msg);
     });
   });

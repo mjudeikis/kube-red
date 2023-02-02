@@ -10,6 +10,7 @@ import crypto = require("crypto");
 import helper = require("node-red-node-test-helper")
 
 helper.init(require.resolve('node-red'));
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 describe('update Node', function () {
   let name: string
@@ -45,7 +46,8 @@ describe('update Node', function () {
     existingObject.metadata.name = name + "-existing";
 
     // create object
-    client.create(existingObject)
+    client.create(existingObject);
+    sleep(1000);
   });
 
   afterEach(function (done) {
@@ -117,7 +119,7 @@ describe('update Node', function () {
           done(err);
         }
       });
-      const msg: PayloadType = {object: object, _msgid: "test"};
+      const msg: PayloadType = {object: object, _msgid: "test6"};
       n1.receive(msg);
     });
   });
@@ -149,7 +151,7 @@ describe('update Node', function () {
           done(err);
         }
       });
-      const msg: PayloadType = {object: existingObject, _msgid: "test"};
+      const msg: PayloadType = {object: existingObject, _msgid: "test7"};
       n1.receive(msg);
     });
   });
