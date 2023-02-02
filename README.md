@@ -1,7 +1,7 @@
 # Kube RED
 
 Kube-RED is a set of NodeRED nodes to interact with Kubernetes. It allows to
-automate kubernetes clusters with no or little code.
+automation of Kubernetes clusters with no or little code.
 
 ## Installation
 
